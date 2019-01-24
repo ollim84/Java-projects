@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:opticon="http://www.f4g.org/schema/constraints/OptimizerConstraints"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:f4g="http://www.f4g.org/schema/MetaModel"
+	xmlns:types="http://www.f4g.org/schema/CommonTypes"
+	targetNamespace="http://www.f4g.org/schema/constraints/OptimizerConstraints"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0">
+	<xsd:import namespace="http://www.f4g.org/schema/MetaModel"
+		schemaLocation="MetaModel.xsd" />
+	<!-- schemaLocation="../MetaModel/MetaModel-1.1.0.xsd" /> -->
+	<xsd:import namespace="http://www.f4g.org/schema/CommonTypes"
+		schemaLocation="CommonTypes.xsd" />
+	<!-- schemaLocation="../Auxiliary/CommonTypes-1.0.xsd" /> -->
+
+	<!-- ****************** Constraints Root ************************ -->
+
+	<xsd:element name="FIT4GreenHPCOptimizerConstraint">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ListOfPolicies" type="opticon:HPCPolicyType" />
+			</xsd:sequence>
+			<xsd:attributeGroup ref="types:TSAttr" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+	<!-- ****************** Policy ************************ -->
+
+	<xsd:complexType name="HPCPolicyType">
+		<xsd:sequence>
+			<xsd:element name="policy" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="FairsharePolicy" type="opticon:FairsharePolicyType"
+							minOccurs="1" maxOccurs="1" />
+						<xsd:element name="PriorityPolicy" type="opticon:PriorityPolicyType"
+							minOccurs="1" maxOccurs="1" />
+						<xsd:element name="NodeAccessPolicy" type="opticon:NodeAccessPolicyType"
+							minOccurs="1" maxOccurs="1" />
+						<xsd:element name="SchedulingAlgorithmPolicy" type="opticon:SchedulingAlgorithmPolicyType"
+							minOccurs="1" maxOccurs="1" />	
+						<xsd:element name="ThresholdPolicy" type="opticon:ThresholdPolicyType"
+							minOccurs="1" maxOccurs="1" />		
+						<xsd:element name="BufferedNodesPolicy" type="opticon:BufferedNodesPolicyType"
+							minOccurs="1" maxOccurs="1" />		
+						<xsd:element name="SingleSideFederationPolicy" type="opticon:SingleSideFederationPolicyType"
+							minOccurs="1" maxOccurs="1" />				
+						<xsd:element name="EnergyEstimationPolicy" type="opticon:EnergyEstimationPolicyType"
+							minOccurs="1" maxOccurs="1" />											
+					</xsd:sequence>
+					<xsd:attribute name="id" type="xsd:ID" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!-- ****************** FairsharePolicy ************************ -->
+
+	<xsd:complexType name="FairsharePolicyType">					
+						<xsd:sequence>
+							<!-- Type of FSPolicy -->
+							<xsd:element name="FSPOLICY" type="opticon:FsPolicyType"
+								minOccurs="1" maxOccurs="1" />
+							<!-- Depth of fairshare tables -->
+							<xsd:element name="FSDEPTH" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+							<!-- Length of FS time window frame in hours format hh:mm -->
+							<xsd:element name="FSINTERVAL" type="xsd:string"
+								minOccurs="1" maxOccurs="1" />
+							<!-- Decay of FS time window frames value between [0...1] -->
+							<xsd:element name="FSDECAY" type="xsd:double"
+								minOccurs="1" maxOccurs="1" />
+							<!-- Specify folder where Fairshare usage data should be stored -->
+							<xsd:element name="FSUSAGEDATADIR" type="xsd:string"
+								minOccurs="1" maxOccurs="1" />
+							<xsd:element name="FSUSERWEIGHT" type="xsd:int" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSUSERTARGET" type="xsd:double" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSGROUPWEIGHT" type="xsd:int" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSGROUPTARGET" type="xsd:double" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSACCOUNTWEIGHT" type="xsd:int" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSACCOUNTTARGET" type="xsd:double" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSQUEUEWEIGHT" type="xsd:int" minOccurs="0"
+								maxOccurs="1" />
+							<xsd:element name="FSQUEUETARGET" type="xsd:double" minOccurs="0"
+								maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>
+	
+	<!-- ****************** ServicePolicy ************************ -->
+
+	<xsd:complexType name="ServicePolicyType">					
+						<xsd:sequence>
+							<!-- Service Policy Weight -->
+							<xsd:element name="QUEUETIMEWEIGHT" type="xsd:int"
+								minOccurs="0" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>
+	
+	<!-- ****************** PriorityPolicy ************************ -->
+
+	<xsd:complexType name="PriorityPolicyType">					
+						<xsd:sequence>
+							<!-- FSPolicy Weight -->
+							<xsd:element name="FSWEIGHT" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+							<!-- CRED policy weight -->
+							<xsd:element name="CREDWEIGHT" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+							<!-- Service policy weight -->
+							<xsd:element name="SERVWEIGHT" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>
+	
+	
+	<xsd:simpleType name="FsPolicyType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DEDICATEDPS" />
+			<xsd:enumeration value="PROP2" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+    <!-- ****************** NodeAccessPolicy ************************ -->
+
+	<xsd:complexType name="NodeAccessPolicyType">					
+						<xsd:sequence>
+							<!-- Multiple jobs per node are possible -->
+							<xsd:element name="sharedNodes" type="xsd:boolean"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>	
+
+	
+	
+	<!-- ****************** SchedulingAlgorithmPolicy ************************ -->
+
+	<xsd:complexType name="SchedulingAlgorithmPolicyType">					
+						<xsd:sequence>
+							<!-- 0 = fifo (First-in first-out), 1 =  bff (backfill first fit), 2 = bbf (backfill best fit) -->
+							<xsd:element name="schedulingAlgorithm" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>	
+
+
+	
+	<!-- ****************** ThresholdPolicy ************************ -->
+
+	<xsd:complexType name="ThresholdPolicyType">					
+						<xsd:sequence>
+							<!-- Threshold to be used for setting servers to standby / powering off -->
+							<xsd:element name="threshold" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>	
+	
+	
+	
+	<!-- ****************** BufferedNodesPolicy ************************ -->
+
+	<xsd:complexType name="BufferedNodesPolicyType">					
+						<xsd:sequence>
+							<!-- indicates the number of servers which should always stay idle (specific to a cluster) -->
+							<xsd:element name="bufferedNodes" type="xsd:int"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>
+	
+	
+	
+	<!-- ****************** SingleSideFederationPolicy ************************ -->
+
+	<xsd:complexType name="SingleSideFederationPolicyType">					
+						<xsd:sequence>
+							<!-- Federation = multiple data centres, each having its own RMS and Queue -->
+							<xsd:element name="federation" type="xsd:boolean"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>	
+	
+	
+	
+	<!-- ****************** EnergyEstimationPolicy ************************ -->
+
+	<xsd:complexType name="EnergyEstimationPolicyType">					
+						<xsd:sequence>
+							<!-- Parameters used for estimating fan actual RPM, HDD readRate and HDD writeRate -->
+							<!-- fan actual RPM = fanRPMpercentage * fan Max RPM -->
+							<!-- HDD readRate = hddReadRatepercentage * HDD max readRate -->
+							<!-- HDD writeRate = hddWriteRatepercentage * HDD max writeRate -->
+							<xsd:element name="fanRPMpercentage" type="xsd:double"
+								minOccurs="1" maxOccurs="1" />
+							<xsd:element name="hddReadRatepercentage" type="xsd:double"
+								minOccurs="1" maxOccurs="1" />
+							<xsd:element name="hddWriteRatepercentage" type="xsd:double"
+								minOccurs="1" maxOccurs="1" />
+						</xsd:sequence>	
+	</xsd:complexType>			
+	
+</xsd:schema>
